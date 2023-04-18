@@ -1,27 +1,47 @@
-class BookCopy:
+import datetime
+from library import Library
 
-    def __init__(self, book, copy_ID, borrower=None, borrowed_date=None, loan=False):
+
+class BookCopy:
+    def __init__(self, book, copy_ID, loan=False):
         self.book = book
         self.copy_ID = copy_ID
-        self.borrower = borrower
-        self.borrowed_date = borrowed_date
         self.loan = loan
-        self._condition_rating = 10
+        self.condition_rating = 10
+        self.borrower = None
+        self.borrowed_date = None
+        self._due_date = 14
+        self.book.available_copybooks.add(self)
+        self.book.copybooks.add(self)
 
-    def borrow_copybook(self):
-        pass
+    def __str__(self):
+        return f"{self.book!s}(copy)"
 
-    def get_copybook(self):
-        pass
+    def __repr__(self):
+        return "{0}({1!r},{2!r},{3!r})".format(
+            self.__class__.__name__, *list(self.__dict__.values())
+        )
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.book == other.book
+
+    def __hash__(self):
+        return int(Library.generate_ID())
+
+    def borrow_copy(self, student):
+        for copybook in student.copybooks:
+            if copybook.book == self.book:
+                raise Exception(f"You already have a book named {self.book.title!r}")
+        self.borrowed_date = datetime.datetime.now()
+        self.borrower = student.name + student.surname
+        student.copybooks.add(self)
 
     @property
-    def condition_rating(self):
-        pass
-
-    @property.setter()
-    def condition_rating(self, value):
-        pass
+    def due_date(self):
+        self._due_date -= (datetime.datetime.now() - self.borrowed_date).days
+        return self._due_date
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass
