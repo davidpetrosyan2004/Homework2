@@ -24,10 +24,15 @@ class Student:
 
     def __eq__(self, other):
         if isinstance(other, Student):
-            return self.name == other.name and self.surname == other.surname
+            return {self.name, self.surname, self.ID} == {
+                other.name,
+                other.surname,
+                other.ID,
+            }
+        return False
 
     def __hash__(self):
-        return 1
+        return hash((self.name, self.surname, self.library, self.ID))
 
     def borrow_book(self, title):
         if self.valid_student:
@@ -45,7 +50,7 @@ class Student:
         if self.copybooks:
             message = "\n".join(
                 [
-                    f"{copybook!s} - {copybook.due_date} days"
+                    f"{copybook!s} - {(copybook.due_date - datetime.datetime.now()).days} days"
                     for copybook in self.copybooks
                 ]
             )
@@ -56,12 +61,10 @@ class Student:
     @property
     def valid_student(self):
         if len(self.copybooks) < self.borrowing_limit:
-            count = 0
             for copybook in self.copybooks:
-                if copybook.due_date >= 0:
-                    count += 1
-            return count == len(self.copybooks)
-
+                if copybook.due_date <= datetime.datetime.now():
+                    return False
+            return True
         return False
 
 

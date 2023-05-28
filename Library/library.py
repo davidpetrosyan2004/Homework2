@@ -1,5 +1,7 @@
 import random
-from Homework2.Library.student import Student
+from student import Student
+from generator import Generator
+
 
 class Library:
     domen = "@polytechnic.am"
@@ -10,14 +12,20 @@ class Library:
         self.books = set()
 
     def __str__(self):
-        return "{0}, {1}...".format(*self.students if self.students else ("No", "students"))
+        student_list = list(self.students)
+        if not student_list:
+            return "No students"
+
+        return ", ".join(map(str, student_list[:2])) + (
+            ", ..." if len(student_list) >= 2 else ""
+        )
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.library_name!r})"
 
     def add_student(self, student):
-        student.email = self.generate_email(student)
-        student.ID = self.generate_ID()
+        student.email = Generator.generate_email(student, self.students, self.domen)
+        student.ID = Generator.generate_id()
         student.library = self
         self.students.add(student)
 
@@ -38,8 +46,9 @@ class Library:
 
         raise Exception(f"No such a book({ISBN}) in Library of {self.library_name!r}")
 
-    def change_borrowing_limit(self, value):
-        Student.borrowing_limit = int(value)
+    @staticmethod
+    def change_borrowing_limit(student, value):
+        student.borrowing_limit = int(value)
 
     @property
     def available_books(self):
@@ -56,27 +65,6 @@ class Library:
             if criterias <= book.book_criterias:
                 return book
         raise Exception(f"Can't find this book in library")
-
-    def generate_email(self, student):
-        dup_count = 0
-        for stud in self.students:
-            if student == stud:
-                dup_count += 1
-        message = (
-            f"{student.name}.{student.surname}{dup_count}.y{self.domen}"
-            if dup_count != 0
-            else f"{student.name}.{student.surname}{self.domen}"
-        )
-
-        return message
-
-    @staticmethod
-    def generate_ID():
-        ID = ""
-        for i in range(12):
-            ID += str(random.randint(0, 1000))
-
-        return ID[:12]
 
 
 if __name__ == "__main__":

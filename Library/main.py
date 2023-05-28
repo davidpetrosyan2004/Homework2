@@ -1,12 +1,15 @@
-from Homework2.Library.copybook import BookCopy
-from Homework2.Library.book import Book
-from Homework2.Library.library import Library
-from Homework2.Library.student import Student
-from Homework2.Serializers.JSONSerializer import JSONSerializer
-from Homework2.Serializers.XMLSerializer import XMLSerializer
+import datetime
+
+from copybook import BookCopy
+from book import Book
+from library import Library
+from student import Student
+from Serializers.json_serializer import JSONSerializer
+from Serializers.xml_serializer import XMLSerializer
+
 
 def main():
-    library = Library("Polytechnic University of Armenia")
+    library = Library("National Polytechnic of Armenia")
 
     # Initializing students
     student_1 = Student("David", "Petrosyan")
@@ -53,7 +56,7 @@ def main():
     copybook_3 = BookCopy(book_3, "20128765232")
     copybook_4 = BookCopy(book_4, "30121245676")
     copybook_5 = BookCopy(book_5, "4128761245")
-    copybook_5 = BookCopy(book_6, "512128761245")
+    copybook_6 = BookCopy(book_6, "512128761245")
 
     # Adding books to library
     library.add_book(book_1)
@@ -84,13 +87,11 @@ def main():
     copybook1 = student_1.borrow_book("The Little Prince")
     copybook2 = student_1.borrow_book("The Adventures of Sherlock Holmes")
     copybook3 = student_1.borrow_book("Harry Potter and the Philosopher's Stone")
-    copybook4 = student_1.borrow_book("Jonathan Livingston Seagull")
-    copybook5 = student_1.borrow_book("She: A History of Adventure")
-    copybook6 = student_1.borrow_book("War and Peace")
+    # copybook4 = student_1.borrow_book("Jonathan Livingston Seagull")
+    # copybook5 = student_1.borrow_book("She: A History of Adventure")
+    # copybook6 = student_1.borrow_book("War and Peace")
 
-    print(student_1.copybooks)
-
-    # student_1.books_status()
+    student_1.books_status()
 
 
 if __name__ == "__main__":

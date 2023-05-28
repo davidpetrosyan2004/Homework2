@@ -1,5 +1,5 @@
 import json
-from Homework2.BaseModel.BaseModel import BaseModel
+from BaseModel.BaseModel import BaseModel
 
 
 class JSONSerializer:
@@ -18,31 +18,10 @@ if __name__ == "__main__":
 
     jsonserializer = JSONSerializer()
 
-    library_1 = jsonserializer.from_json(Library, "{\"library_name\": \"Polytechnic University of Armenia\"}")
+    library_1 = jsonserializer.from_json(
+        Library, '{"library_name": "Polytechnic University of Armenia"}'
+    )
     print(library_1.library_name)
 
     library_1_json = jsonserializer.to_json(library_1)
     print(library_1_json)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

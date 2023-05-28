@@ -20,5 +20,3 @@ class BaseModel:
             for key, element in value:
                 new_dict[key] = cls.__serialize(element)
             return new_dict
-
-
